@@ -28,8 +28,30 @@ function getRow(firstRow, secondRow) {
         console.log(secondRow)
     }
 }
-
 const fullCount = getRow(firstRow, secondRow)
+
+const phone = '+71234567890';
+let phoneResult = '';
+
+function formattedPhone(phone) {
+    
+    for (let i = 0; i < phone.length; i++) {
+        phoneResult += phone.charAt(i);
+        if (i == 1) {
+            phoneResult += ' (';
+        } else if (i == 4) {
+            phoneResult += ') ';
+        } else if (i == 7) {
+            phoneResult += '-';
+        } else if (i == 9) {
+            phoneResult += '-';
+        }
+    }
+    return phone;
+}
+
+console.log(formattedPhone(phone));
+console.log(phoneResult);
 
 
 
