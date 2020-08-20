@@ -32,10 +32,9 @@ const fullCount = getRow(firstRow, secondRow)
 
 
 const phone = '+71234567890';
-let phoneResult = '';
 
 function formattedPhone(phone) {
-    
+    let phoneResult = '';
     for (let i = 0; i < phone.length; i++) {
         phoneResult += phone.charAt(i);
         if (i == 1) {
@@ -48,11 +47,11 @@ function formattedPhone(phone) {
             phoneResult += '-';
         }
     }
-    return phone;
+    return phoneResult;
 }
 
 console.log(formattedPhone(phone));
-console.log(phoneResult);
+
 
 
 
