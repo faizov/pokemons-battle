@@ -54,4 +54,27 @@ console.log(formattedPhone(phone));
 console.log(phoneResult);
 
 
+const phone = '+71234567890';
+
+function formattedPhone(phone) {
+    let phoneResult = '';
+    for (let i = 0; i < phone.length; i++) {
+        phoneResult += phone.charAt(i);
+        if (i == 1) {
+            phoneResult += ' (';
+        } else if (i == 4) {
+            phoneResult += ') ';
+        } else if (i == 7) {
+            phoneResult += '-';
+        } else if (i == 9) {
+            phoneResult += '-';
+        }
+    }
+    return phoneResult;
+}
+
+console.log(formattedPhone(phone));
+
+
+
 
