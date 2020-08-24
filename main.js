@@ -1,80 +1,70 @@
-const firstRow = 'мама мыла раму';
-const secondRow = 'собака друг человека';
-const a = 'а';
+const $btn = document.getElementById('btn-kick');
+const $btnSuperKick = document.getElementById('btn-super-kick');
 
-function getRow(firstRow, secondRow) {
-    let resultFirst = '';
-    for (let i = 0; i < firstRow.length; i++) {
-        let result = firstRow.charAt(i);
-        if (result != a) {
-            continue
-        } 
-        resultFirst += firstRow.charAt(i);
-    }
+const character = {
+    name: 'Pikachu',
+    defaultHP: 100,
+    damageHP: 100,
+    damageCount: document.getElementById('damage-count'),
+    elHP: document.getElementById('health-character'),
+    elProgressbar: document.getElementById('progressbar-character'),
+}
+
+const enemy = {
+    name: 'Charmander',
+    defaultHP: 100,
+    damageHP: 100,
+    damageCount: document.getElementById('damage-count-enemy'),
+    elHP: document.getElementById('health-enemy'),
+    elProgressbar: document.getElementById('progressbar-enemy'),
+}
+
+$btn.addEventListener('click', function(person){
+    changeHP(random(20), character);
+    changeHP(random(20), enemy);
     
-    let resultSecond = '';
-    for (let i = 0; i < secondRow.length; i++) {
-        let result = secondRow.charAt(i);
-        if (result != a) {
-            continue
-        } 
-        resultSecond += secondRow.charAt(i);
-      
-    }
-    
-    if (resultFirst.length > resultSecond.length) {
-        console.log(firstRow)
+});
+
+$btnSuperKick.addEventListener('click', function(){
+    changeHP(random(20), character);
+    changeHP(random(50), enemy);
+    $btnSuperKick.disabled = true;
+});
+
+function init() {
+    console.log('Start Game!');
+    renderHP(character);
+    renderHP(enemy);
+}
+
+function renderHP(person){
+    renderHPLife(person);
+    renderProgressbarHP(person);
+}
+
+function renderHPLife(person) {
+    person.elHP.innerText = person.damageHP + ' / ' + person.defaultHP;
+}
+
+function renderProgressbarHP(person) {
+    person.elProgressbar.style.width = person.damageHP + '%';
+}
+
+function changeHP (count, person) {
+    if (person.damageHP < count) {
+        person.damageHP = 0;
+        alert('Бедный ' + person.name + ' проиграл')
+        $btn.disabled = true;
     } else {
-        console.log(secondRow)
+        person.damageHP -= count;
     }
-}
-const fullCount = getRow(firstRow, secondRow)
-
-const phone = '+71234567890';
-let phoneResult = '';
-
-function formattedPhone(phone) {
-    
-    for (let i = 0; i < phone.length; i++) {
-        phoneResult += phone.charAt(i);
-        if (i == 1) {
-            phoneResult += ' (';
-        } else if (i == 4) {
-            phoneResult += ') ';
-        } else if (i == 7) {
-            phoneResult += '-';
-        } else if (i == 9) {
-            phoneResult += '-';
-        }
-    }
-    return phone;
+    person.damageCount.innerText = '-' + count;
+    person.damageCount.innerText = '-' + count;
+    renderHP(person);
 }
 
-console.log(formattedPhone(phone));
-console.log(phoneResult);
-
-
-const phone = '+71234567890';
-
-function formattedPhone(phone) {
-    let phoneResult = '';
-    for (let i = 0; i < phone.length; i++) {
-        phoneResult += phone.charAt(i);
-        if (i == 1) {
-            phoneResult += ' (';
-        } else if (i == 4) {
-            phoneResult += ') ';
-        } else if (i == 7) {
-            phoneResult += '-';
-        } else if (i == 9) {
-            phoneResult += '-';
-        }
-    }
-    return phoneResult;
+function random(num) {
+    return Math.ceil(Math.random() * num);
 }
 
-console.log(formattedPhone(phone));
-
-
-
-
+init();
