@@ -371,9 +371,23 @@ body {
     max-width: 1024px;
     margin-left: auto;
     margin-right: auto;
-    background: #ffffff;
-    padding: 30px;
+    background: #ffffffcb;
+    padding: 1em;
+    height: 380px;
+    overflow: auto;
+    border: 2px solid #00b8ff;
+    text-align: left;
 }
+
+#logs p{
+padding: 10px 0 10px 0;
+}
+
+#winner {
+    color: #fff;
+}
+
+    
 @-webkit-keyframes boing {
     0%,
     100% {

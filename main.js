@@ -34,7 +34,7 @@ $btn.addEventListener('click', function(){
 });
 
 $btnSuperKick.addEventListener('click', function(){
-    character.changeHP(random(50));
+    character.changeHP(random(20));
     enemy.changeHP(random(50));
     $btnSuperKick.disabled = true;
 });
@@ -60,16 +60,15 @@ function renderProgressbarHP() {
     this.elProgressbar.style.width = this.damageHP / this.defaultHP * 100 + '%';
 }
 
-function changeHP (count, damageHP, defaultHP) {
-    this.damageHP -= count;
-
-
-    const log = this === enemy ? generateLog(this, character, count) : generateLog(this, enemy, count);
-    
-
+function changeHP (count) {
+    this.damageHP -= count;    
     if (this.damageHP <= count) {
         this.damageHP = 0;
-        alert('Бедный ' + this.name + ' проиграл')
+            
+        const $winner = document.querySelector('#winner');
+        const $win = document.createElement('p');
+        $win.innerText = `Бедный ${this.name} проиграл`;
+        $winner.insertBefore($win, $winner.children[0]);
         $btn.disabled = true;
         $btnSuperKick.disabled = true;
     }
@@ -78,10 +77,10 @@ function changeHP (count, damageHP, defaultHP) {
 
     character.renderHP()
     enemy.renderHP()
-    console.log(log)
 
-    const $logs = document.querySelector('#logs');
+    
     for (let i = 0; i < 1; i++) {
+        const $logs = document.querySelector('#logs');
         const log = this === enemy ? generateLog(this, character, count) : generateLog(this, enemy, count);
         const $p = document.createElement('p');
     
@@ -96,7 +95,7 @@ function random(num) {
     
 }
 
-function generateLog (firstPerson, secondPerson, count, test) {
+function generateLog (firstPerson, secondPerson, count) {
     const logs = [
         `${firstPerson.name} вспомнил что-то важное, но неожиданно ${secondPerson.name}, не помня себя от испуга, ударил в предплечье врага. -${count} [${firstPerson.damageHP}/${firstPerson.defaultHP}]`,
         `${firstPerson.name} поперхнулся, и за это ${secondPerson.name} с испугу приложил прямой удар коленом в лоб врага. -${count} [${firstPerson.damageHP}/${firstPerson.defaultHP}]`,
