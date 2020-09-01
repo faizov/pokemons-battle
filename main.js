@@ -1,6 +1,7 @@
 const $btn = document.getElementById('btn-kick');
 const $btnSuperKick = document.getElementById('btn-super-kick');
 
+
 const character = {
     name: 'Pikachu',
     defaultHP: 100,
@@ -30,13 +31,14 @@ const enemy = {
 $btn.addEventListener('click', function(){
     character.changeHP(random(20));
     enemy.changeHP(random(20));
-    
+    kick();
 });
 
 $btnSuperKick.addEventListener('click', function(){
     character.changeHP(random(20));
     enemy.changeHP(random(50));
     $btnSuperKick.disabled = true;
+    superKick();
 });
 
 function init() {
@@ -61,6 +63,7 @@ function renderProgressbarHP() {
 }
 
 function changeHP (count) {
+    
     this.damageHP -= count;    
     if (this.damageHP <= count) {
         this.damageHP = 0;
@@ -90,10 +93,8 @@ function changeHP (count) {
     }
 }
 
-function random(num) {
-    return Math.ceil(Math.random() * num);
-    
-}
+
+const random = (num) => Math.ceil(Math.random() * num);
 
 function generateLog (firstPerson, secondPerson, count) {
     const logs = [
@@ -113,8 +114,32 @@ function generateLog (firstPerson, secondPerson, count) {
 }
 
 
+function click() {
+    let count = 0;
+    let countStop = 7;
+    let superCountStop = 1;
+    
+    return function() {
+        count++;
+        countStop--;
+        $countKick = document.getElementById('count-kick');
+        $countKick.innerText = `У вас осталось ${countStop} нажатий`
 
+        $countSuperKick = document.getElementById('count-super-kick');
+        $countSuperKick.innerText = `У вас осталось ${superCountStop} нажатий`
+        if(count > 6) {
+            $btn.disabled = true;
+            $countKick.innerText = `У вас не осталось нажатий`
+        }
+        if(superCountStop > 0) {
+            $btnSuperKick.disabled = true;
+            $countSuperKick.innerText = `У вас не осталось нажатий`
+        }
+    }
+}
 
+const kick = click();
+const superKick = click();
 
 
 init();
