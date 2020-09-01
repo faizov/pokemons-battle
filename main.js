@@ -1,6 +1,8 @@
 const $btn = document.getElementById('btn-kick');
 const $btnSuperKick = document.getElementById('btn-super-kick');
+const $countKick = document.getElementById('count-kick');
 
+const $countSuperKick = document.getElementById('count-super-kick');
 
 const character = {
     name: 'Pikachu',
@@ -114,32 +116,30 @@ function generateLog (firstPerson, secondPerson, count) {
 }
 
 
-function click() {
-    let count = 0;
-    let countStop = 7;
-    let superCountStop = 1;
-    
+function countKick(count) {
     return function() {
-        count++;
-        countStop--;
-        $countKick = document.getElementById('count-kick');
-        $countKick.innerText = `У вас осталось ${countStop} нажатий`
-
-        $countSuperKick = document.getElementById('count-super-kick');
-        $countSuperKick.innerText = `У вас осталось ${superCountStop} нажатий`
-        if(count > 6) {
+        count--;
+        $countKick.innerText = `У вас осталось ${count} нажатий`
+        if(count === 0) {
             $btn.disabled = true;
             $countKick.innerText = `У вас не осталось нажатий`
         }
-        if(superCountStop > 0) {
+    }
+}
+
+function countSuperKick(count) {  
+    return function() {
+        count--;
+        $countSuperKick.innerText = `У вас осталось ${count} нажатий`
+        if(count === 0) {
             $btnSuperKick.disabled = true;
             $countSuperKick.innerText = `У вас не осталось нажатий`
         }
     }
 }
 
-const kick = click();
-const superKick = click();
+const kick = countKick(7);
+const superKick = countSuperKick(1);
 
 
 init();
