@@ -30,34 +30,42 @@ function $getElById(id) {
 
 $btn.addEventListener('click', function(){
     player1.changeHP(random(20), function(count) {
-        addLogs(count);
+        for (let i = 0; i < 1; i++) {
+            const $logs = document.querySelector('#logs');
+            const $p = document.createElement('p');
+            $p.innerText = `${generateLog(player2, player1, count, random)}`;
+            $logs.insertBefore($p, $logs.children[0]);
+            
+        }
     });
     player2.changeHP(random(20), function(count) {
-        addLogs(count);
+        for (let i = 0; i < 1; i++) {
+            const $logs = document.querySelector('#logs');
+            const $p = document.createElement('p');
+            $p.innerText = `${generateLog(player1, player2, count, random)}`;
+            $logs.insertBefore($p, $logs.children[0]);
+            
+        }
     });
+    console.log(player2);
     kick();
 });
 
 $btnSuperKick.addEventListener('click', function(count){
-    player2.changeHP(random(50), function(count) {
-        addLogs(count);
+    player2.changeHP(random(20), function(count) {
+        for (let i = 0; i < 1; i++) {
+            const $logs = document.querySelector('#logs');
+            const $p = document.createElement('p');
+            $p.innerText = `${generateLog(player1, player2, count, random)}`;
+            $logs.insertBefore($p, $logs.children[0]);
+            
+        }
     });
     superKick();
 });
 
 function init() {
     player1.renderHP();
-}
-
-function addLogs(count) {
-    for (let i = 0; i < 1; i++) {
-        const $logs = document.querySelector('#logs');
-        const $p = document.createElement('p');
-        const log = player2 ? generateLog(player1, player2, count, random) : generateLog(player2, player1, count, random);
-        // $p.innerText = `${generateLog(player1, player2, count, random)}`;
-        $p.innerText = `${log}`;
-        $logs.insertBefore($p, $logs.children[0]);
-    }
 }
 
 function countKick(count) {

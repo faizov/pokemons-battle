@@ -1,4 +1,4 @@
-export function generateLog (player1, player2, count, random) {
+export function generateLog (player2, player1, count, random) {
     const { name } = player1;
     const { name: enemyName } = player2;
     const logs = [
