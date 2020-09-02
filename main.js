@@ -1,18 +1,16 @@
 import Pokemon from './pokemon.js';
 import { generateLog } from './logs.js'
 import { random } from './random.js'
+import { pokemons } from './pokemons.js'
 
-const $btn = $getElById('btn-kick');
 const $btnSuperKick = $getElById('btn-super-kick');
-const $countKick = $getElById('count-kick');
 const $countSuperKick = $getElById('count-super-kick');
 
+const pikachu = pokemons.find(item => item.name === 'Pikachu');
+
 const player1 = new Pokemon({
-    name: 'Pikachu',
-    type: 'electric',
-    defaultHP: 100,
-    damageHP: 100,
-    selectors: 'character',
+    ...pikachu,
+    selectors: 'player1',
 });
 
 const player2 = new Pokemon({
@@ -20,63 +18,79 @@ const player2 = new Pokemon({
     type: 'fire',
     defaultHP: 100,
     damageHP: 100,
-    selectors: 'enemy',
+    selectors: 'player2',
 });
 
+const $control = document.querySelector('.control');
+
+player1.attacks.forEach(item => {
+    const $btn = document.createElement('button');
+    $btn.classList.add('button');
+    $btn.innerText = item.name;
+    const btnCount = countKick(item.maxCount, $btn)
+    $btn.addEventListener('click', () => {
+        btnCount();
+        
+    })
+    $control.appendChild($btn);
+})
 
 function $getElById(id) {
     return document.getElementById(id)
 }
 
-$btn.addEventListener('click', function(){
-    player1.changeHP(random(20), function(count) {
-        for (let i = 0; i < 1; i++) {
-            const $logs = document.querySelector('#logs');
-            const $p = document.createElement('p');
-            $p.innerText = `${generateLog(player2, player1, count, random)}`;
-            $logs.insertBefore($p, $logs.children[0]);
+// $btn.addEventListener('click', function(){
+//     player1.changeHP(random(20), function(count) {
+//         for (let i = 0; i < 1; i++) {
+//             const $logs = document.querySelector('#logs');
+//             const $p = document.createElement('p');
+//             $p.innerText = `${generateLog(player2, player1, count, random)}`;
+//             $logs.insertBefore($p, $logs.children[0]);
             
-        }
-    });
-    player2.changeHP(random(20), function(count) {
-        for (let i = 0; i < 1; i++) {
-            const $logs = document.querySelector('#logs');
-            const $p = document.createElement('p');
-            $p.innerText = `${generateLog(player1, player2, count, random)}`;
-            $logs.insertBefore($p, $logs.children[0]);
+//         }
+//     });
+//     player2.changeHP(random(20), function(count) {
+//         for (let i = 0; i < 1; i++) {
+//             const $logs = document.querySelector('#logs');
+//             const $p = document.createElement('p');
+//             $p.innerText = `${generateLog(player1, player2, count, random)}`;
+//             $logs.insertBefore($p, $logs.children[0]);
             
-        }
-    });
-    console.log(player2);
-    kick();
-});
+//         }
+//     });
+//     console.log(player2);
+//     kick();
+// });
 
-$btnSuperKick.addEventListener('click', function(count){
-    player2.changeHP(random(20), function(count) {
-        for (let i = 0; i < 1; i++) {
-            const $logs = document.querySelector('#logs');
-            const $p = document.createElement('p');
-            $p.innerText = `${generateLog(player1, player2, count, random)}`;
-            $logs.insertBefore($p, $logs.children[0]);
+// $btnSuperKick.addEventListener('click', function(count){
+//     player2.changeHP(random(20), function(count) {
+//         for (let i = 0; i < 1; i++) {
+//             const $logs = document.querySelector('#logs');
+//             const $p = document.createElement('p');
+//             $p.innerText = `${generateLog(player1, player2, count, random)}`;
+//             $logs.insertBefore($p, $logs.children[0]);
             
-        }
-    });
-    superKick();
-});
+//         }
+//     });
+//     superKick();
+// });
 
 function init() {
     player1.renderHP();
 }
 
-function countKick(count) {
+function countKick(count, el) {
+    
     return function() {
         count--;
-        $countKick.innerText = `У вас осталось ${count} нажатий`
+        el.innerText =  `${el.innerText} (${count})`
         if(count === 0) {
-            $btn.disabled = true;
-            $countKick.innerText = `У вас не осталось нажатий`
+            el.disabled = true;
+            el.innerText = `У вас не осталось нажатий`
         }
-       
+
+        return count;
+        
     }
 }
 
@@ -89,8 +103,9 @@ function countSuperKick(count) {
         if(count === 0) {
             $btnSuperKick.disabled = true;
             $countSuperKick.innerText = `У вас не осталось нажатий`
+            
         }
-       
+        
     }
 }
 
