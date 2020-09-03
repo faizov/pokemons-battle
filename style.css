@@ -387,6 +387,12 @@ padding: 10px 0 10px 0;
     color: #fff;
 }
 
+.span {
+    color: #b1b1b1;
+    display: block;
+    font-size: 12px;
+}
+
     
 @-webkit-keyframes boing {
     0%,
