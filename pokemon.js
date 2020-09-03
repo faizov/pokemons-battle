@@ -57,28 +57,13 @@ class Pokemon extends Selectors{
                 const $win = document.createElement('p');
                 $win.innerText = `Бедный ${this.name} проиграл`;
                 $winner.insertBefore($win, $winner.children[0]);
-                // const allButtons = document.querySelectorAll('.control .button');
-                
-                // allButtons.forEach($item => $item.remove());
-
-                startGame();
+                startGame($win, $winner);
             }
             this.damageCount.innerText = '-' + count;
             this.renderHP()
             cb && cb(count);
     }
-    // startGame = () => {
 
-    //     const $start = document.querySelector('.control');
-    //     const $btnstart = document.createElement('button');
-    //     $btnstart.classList.add('button');
-    //     $btnstart.innerText = 'Start game!';
-    //     $start.appendChild($btnstart);
-    //     $btnstart.addEventListener('click', () => {
-    //         console.log('Start new');
-
-    //     })
-    // }
 }
 
 export default Pokemon; 
