@@ -1,101 +1,107 @@
 import Pokemon from './pokemon.js';
 import { generateLog } from './logs.js'
 import { random } from './random.js'
+import { pokemons } from './pokemons.js'
 
-const $btn = $getElById('btn-kick');
-const $btnSuperKick = $getElById('btn-super-kick');
-const $countKick = $getElById('count-kick');
-const $countSuperKick = $getElById('count-super-kick');
+const randomPokemon = Math.floor(Math.random() * pokemons.length);
+const randomName = pokemons[randomPokemon];
+const pokemon = pokemons.find(item => item.name === 'Pikachu');
+const pokemonEnemy = pokemons.find(item => item.name === randomName.name);
 
-const player1 = new Pokemon({
-    name: 'Pikachu',
-    type: 'electric',
-    defaultHP: 100,
-    damageHP: 100,
-    selectors: 'character',
+let player1 = new Pokemon({
+    ...pokemon,
+    selectors: 'player1',
 });
 
-const player2 = new Pokemon({
-    name: 'Charmander',
-    type: 'fire',
-    defaultHP: 100,
-    damageHP: 100,
-    selectors: 'enemy',
+let player2 = new Pokemon({
+    ...pokemonEnemy,
+    selectors: 'player2',
+    
 });
 
+const $control = document.querySelector('.control');
 
-function $getElById(id) {
-    return document.getElementById(id)
-}
-
-$btn.addEventListener('click', function(){
-    player1.changeHP(random(20), function(count) {
-        for (let i = 0; i < 1; i++) {
-            const $logs = document.querySelector('#logs');
-            const $p = document.createElement('p');
-            $p.innerText = `${generateLog(player2, player1, count, random)}`;
-            $logs.insertBefore($p, $logs.children[0]);
-            
-        }
-    });
-    player2.changeHP(random(20), function(count) {
-        for (let i = 0; i < 1; i++) {
-            const $logs = document.querySelector('#logs');
-            const $p = document.createElement('p');
-            $p.innerText = `${generateLog(player1, player2, count, random)}`;
-            $logs.insertBefore($p, $logs.children[0]);
-            
-        }
-    });
-    console.log(player2);
-    kick();
-});
-
-$btnSuperKick.addEventListener('click', function(count){
-    player2.changeHP(random(20), function(count) {
-        for (let i = 0; i < 1; i++) {
-            const $logs = document.querySelector('#logs');
-            const $p = document.createElement('p');
-            $p.innerText = `${generateLog(player1, player2, count, random)}`;
-            $logs.insertBefore($p, $logs.children[0]);
-            
-        }
-    });
-    superKick();
-});
+attack()
 
 function init() {
     player1.renderHP();
 }
 
-function countKick(count) {
+function countKick(count, el, span) {
+    
     return function() {
         count--;
-        $countKick.innerText = `У вас осталось ${count} нажатий`
+        span.innerText =  `У вас осталось ${count} нажатий`
         if(count === 0) {
-            $btn.disabled = true;
-            $countKick.innerText = `У вас не осталось нажатий`
+            el.disabled = true;
+            el.innerText = `У вас не осталось нажатий`
         }
-       
+
+        return count;
+        
     }
 }
 
-function countSuperKick(count) {
-    return function() {
-        count--;
+function startGame(winner) {
+    const randomPokemon = Math.floor(Math.random() * pokemons.length);
+    const randomName = pokemons[randomPokemon];
+    const pokemonEnemy = pokemons.find(item => item.name === randomName.name);
+    
+    if(player1.hp.current <=0 || player2.hp.current <=0 ) {
+        const allButtons = document.querySelectorAll('.control .button');   
+        allButtons.forEach($item => $item.remove());
 
-        $countSuperKick.innerText = `У вас осталось ${count} нажатий`
+        const $start = document.querySelector('.control');
+        const $btnstart = document.createElement('button');
+        $btnstart.classList.add('button');
+        $btnstart.innerText = 'Start game!';
+        $start.appendChild($btnstart);
 
-        if(count === 0) {
-            $btnSuperKick.disabled = true;
-            $countSuperKick.innerText = `У вас не осталось нажатий`
-        }
-       
-    }
+        $btnstart.addEventListener('click', () => {
+            console.log(pokemonEnemy);
+            player1 = new Pokemon({
+                ...pokemon,
+                selectors: 'player1',
+            });  
+            
+            player2 = new Pokemon({
+                ...pokemonEnemy,
+                selectors: 'player2',
+            });
+            $btnstart.remove();
+            winner.remove();
+            attack()
+        })
+        
+    }   
+}
+function attack() {
+    player1.attacks.forEach(item => {
+        const $btn = document.createElement('button');
+        $btn.classList.add('button');
+        const $span = document.createElement('span');
+        $span.classList.add('span');
+        $btn.innerText = item.name;
+        const btnCount = countKick(item.maxCount, $btn, $span)
+        $btn.addEventListener('click', () => {
+            btnCount();
+            player1.changeHP(random(item.minDamage), function(count) {
+                addLog(count)
+            }, startGame );
+            player2.changeHP(random(item.minDamage), function(count) {
+                addLog(count)
+            }, startGame );  
+        })
+        $control.appendChild($btn);
+        $btn.appendChild($span);
+    })
 }
 
-const kick = countKick(7);
-const superKick = countSuperKick(1);
-
+function addLog(count) {
+    const $logs = document.querySelector('#logs');
+    const $p = document.createElement('p');
+    $p.innerText = `${generateLog(player2, player1, count, random)}`;
+    $logs.insertBefore($p, $logs.children[0]);
+}
 
 init();
