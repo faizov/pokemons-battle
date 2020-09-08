@@ -4,19 +4,16 @@ import { random } from './random.js'
 
 class Game {
     getPokemons = async () => {
-        const responce = await fetch('https://reactmarathon-api.netlify.app/api/pokemons');
+        const responce = await fetch('https://reactmarathon-api.netlify.app/api/pokemons?random=true');
         const body = await responce.json();
         return body;
     }
 
     start = async () => {
-        const pokemons = await this.getPokemons();
-        const randomPokemon = Math.floor(Math.random() * pokemons.length);
-        const randomName = pokemons[randomPokemon];
-        const pokemon = pokemons.find(item => item.name === randomName.name);
-        const pokemonEnemy = pokemons.find(item => item.name === randomName.name);
+        const pokemon = await this.getPokemons();
+        const pokemonEnemy = await this.getPokemons();
 
-        console.log(pokemons);
+        
         let player1 = new Pokemon({
             ...pokemon,
             selectors: 'player1',
@@ -31,12 +28,14 @@ class Game {
         const $control = document.querySelector('.control');
 
         player1.attacks.forEach(item => {
+
             const $btn = document.createElement('button');
             $btn.classList.add('button');
             const $span = document.createElement('span');
             $span.classList.add('span');
             $btn.innerText = item.name;
             const btnCount = countKick(item.maxCount, $btn, $span)
+
             $btn.addEventListener('click', () => {
                 btnCount();
                 player1.changeHP(random(item.minDamage), function(count) {
@@ -84,15 +83,11 @@ class Game {
             }
         }
 
-        function startGame(winner) {
-            const randomPokemon = Math.floor(Math.random() * pokemons.length);
-            const randomName = pokemons[randomPokemon];
-            const pokemonEnemy = pokemons.find(item => item.name === randomName.name);
-            
+        function startGame(winner) {   
             if(player1.hp.current <=0 || player2.hp.current <=0 ) {
+
                 const allButtons = document.querySelectorAll('.control .button');   
                 allButtons.forEach($item => $item.remove());
-
                 const $start = document.querySelector('.control');
                 const $btnstart = document.createElement('button');
                 $btnstart.classList.add('button');
@@ -111,6 +106,7 @@ class Game {
                         selectors: 'player2',
                         
                     });
+
                     $btnstart.remove();
                     winner.remove();
                     attack()
