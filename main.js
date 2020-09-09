@@ -44,9 +44,7 @@ class Game {
 
             $btn.addEventListener('click', () => {
                 btnCount();
-
-                console.log(damage)
-                player1.changeHP(random(item.minDamage), function(count) {
+                player1.changeHP(random(damage.kick.player1), function(count) {
                     for (let i = 0; i < 1; i++) {
                         const $logs = document.querySelector('#logs');
                         const $p = document.createElement('p');
@@ -58,7 +56,7 @@ class Game {
                 }, startGame );
                 
 
-                player2.changeHP(random(item.minDamage), function(count) {
+                player2.changeHP(random(damage.kick.player2), function(count) {
                     for (let i = 0; i < 1; i++) {
                         const $logs = document.querySelector('#logs');
                         const $p = document.createElement('p');
