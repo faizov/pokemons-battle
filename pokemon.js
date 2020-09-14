@@ -5,7 +5,7 @@ class Selectors {
         this.damageCount = document.getElementById(`damage-count-${name}`);
         this.namePokemon = document.getElementById(`name-${name}`);
         
-        this.imgPokemon = document.getElementById(`img-player2`);
+        this.imgPokemon = document.getElementById(`img-${name}`);
 
         this.$control = document.querySelectorAll('.control');
         this.$btnSuperKick = document.getElementById('btn-super-kick');
